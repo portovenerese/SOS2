@@ -5,23 +5,24 @@ body {
     padding: 20px;
 }
 
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
 h1 {
-    font-size: 1.5em;
+    text-align: center;
 }
 
-#logo {
+img {
+    display: block;
+    margin: 0 auto;
     max-width: 100%;
     height: auto;
-    margin-top: 10px;
+}
+
+form {
+    margin-top: 20px;
 }
 
 .form-group {
     margin-bottom: 15px;
+    display: none;
 }
 
 label {
@@ -36,13 +37,14 @@ input, select, textarea {
 }
 
 button {
-    display: block;
+    display: none;
     width: 100%;
     padding: 10px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
+    margin-top: 20px;
 }
 
 button:hover {
