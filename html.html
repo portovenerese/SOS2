@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associazione SOS METAL DETECTOR NAZIONALE Oggetti Smarriti (R) ODV</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Associazione SOS METAL DETECTOR NAZIONALE Oggetti Smarriti (R) ODV</h1>
+        <img src="logo.jpg" alt="Logo Associazione" id="logo">
+    </header>
+
+    <form id="lostObjectForm" action="https://formspree.io/f/your_formspree_endpoint" method="POST">
+        <div class="form-group">
+            <label for="name">Nome e cognome del richiedente:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group" style="display:none;">
+            <label for="phone">Numero di telefono dove poter essere contattati:</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group" style="display:none;">
+            <label for="object">Oggetto smarrito:</label>
+            <select id="object" name="object" required>
+                <option value="">Seleziona</option>
+                <option value="anello">Anello</option>
+                <option value="braccialetto">Braccialetto</option>
+                <option value="orecchino">Orecchino</option>
+                <option value="orologio">Orologio</option>
+                <option value="ciondolo">Ciondolo</option>
+                <option value="chiavi">Chiavi</option>
+                <option value="altro">Altro</option>
+            </select>
+        </div>
+
+        <div id="otherObjectContainer" class="form-group" style="display:none;">
+            <label for="otherObject">Specificare altro oggetto:</label>
+            <input type="text" id="otherObject" name="otherObject">
+        </div>
+
+        <div class="form-group" style="display:none;">
+            <label for="where">Dove:</label>
+            <select id="where" name="where" required>
+                <option value="">Seleziona</option>
+                <option value="mare">Mare</option>
+                <option value="spiaggia">Spiaggia</option>
+                <option value="bosco">Bosco</option>
+                <option value="campo">Campo</option>
+                <option value="giardinoPrivato">Giardino privato</option>
+                <option value="altro">Altro</option>
+            </select>
+        </div>
+
+        <div id="additionalWhereInfo" style="display:none;">
+            <!-- Contenuto dinamico per le opzioni aggiuntive -->
+        </div>
+
+        <div class="form-group" style="display:none;">
+            <label for="region">Regione:</label>
+            <select id="region" name="region" required>
+                <option value="">Seleziona</option>
+                <!-- Opzioni per le regioni italiane -->
+            </select>
+        </div>
+
+        <div id="provinceContainer" class="form-group" style="display:none;">
+            <label for="province">Provincia:</label>
+            <select id="province" name="province" required>
+                <option value="">Seleziona</option>
+                <!-- Opzioni per le province -->
+            </select>
+        </div>
+
+        <div id="communeContainer" class="form-group" style="display:none;">
+            <label for="commune">Comune:</label>
+            <select id="commune" name="commune" required>
+                <option value="">Seleziona</option>
+                <!-- Opzioni per i comuni -->
+            </select>
+        </div>
+
+        <div class="form-group" style="display:none;">
+            <label for="notes">Note:</label>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+        </div>
+
+        <button type="submit" id="submitButton" style="display:none;">Invia</button>
+    </form>
+
+    <script src="app.js"></script>
+</body>
+</html>
