@@ -7,23 +7,21 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Associazione SOS METAL DETECTOR NAZIONALE Oggetti Smarriti (R) ODV</h1>
-        <img src="logo.jpg" alt="Logo Associazione" id="logo">
-    </header>
+    <h1>Associazione SOS METAL DETECTOR NAZIONALE Oggetti Smarriti (R) ODV</h1>
+    <img src="logo.jpg" alt="Logo Associazione">
 
-    <form id="lostObjectForm" action="https://formspree.io/f/xyzgdwan" method="POST">
+    <form id="lostObjectForm" action="https://formspree.io/f/your_formspree_endpoint" method="POST">
         <div class="form-group">
             <label for="name">Nome e cognome del richiedente:</label>
             <input type="text" id="name" name="name" required>
         </div>
 
-        <div class="form-group" style="display:none;">
+        <div class="form-group">
             <label for="phone">Numero di telefono dove poter essere contattati:</label>
             <input type="tel" id="phone" name="phone" required>
         </div>
 
-        <div class="form-group" style="display:none;">
+        <div class="form-group">
             <label for="object">Oggetto smarrito:</label>
             <select id="object" name="object" required>
                 <option value="">Seleziona</option>
@@ -37,12 +35,12 @@
             </select>
         </div>
 
-        <div id="otherObjectContainer" class="form-group" style="display:none;">
+        <div class="form-group" id="otherObjectContainer">
             <label for="otherObject">Specificare altro oggetto:</label>
             <input type="text" id="otherObject" name="otherObject">
         </div>
 
-        <div class="form-group" style="display:none;">
+        <div class="form-group">
             <label for="where">Dove:</label>
             <select id="where" name="where" required>
                 <option value="">Seleziona</option>
@@ -55,42 +53,97 @@
             </select>
         </div>
 
-        <div id="additionalWhereInfo" style="display:none;">
-            <!-- Contenuto dinamico per le opzioni aggiuntive -->
+        <div class="form-group" id="seaOptions">
+            <label for="seaDepth">Profondità dell'acqua:</label>
+            <select id="seaDepth" name="seaDepth">
+                <option value="">Seleziona</option>
+                <option value="bagnasciuga">Acqua bassa (bagnasciuga)</option>
+                <option value="unMetroMezzo">Acqua fino ad un metro e mezzo</option>
+                <option value="profonda">Acqua profonda</option>
+            </select>
         </div>
 
-        <div class="form-group" style="display:none;">
+        <div class="form-group" id="seaBottomOptions">
+            <label for="seaBottom">Tipologia di fondale:</label>
+            <select id="seaBottom" name="seaBottom">
+                <option value="">Seleziona</option>
+                <option value="sabbia">Sabbia</option>
+                <option value="ghiaia">Ghiaia</option>
+                <option value="sabbiaGhiaia">Sabbia e ghiaia</option>
+                <option value="sassiGrandi">Sassi grandi</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="beachOptions">
+            <label for="beachType">Tipologia di spiaggia:</label>
+            <select id="beachType" name="beachType">
+                <option value="">Seleziona</option>
+                <option value="stabilimento">Stabilimento balneare</option>
+                <option value="pubblica">Spiaggia pubblica</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="beachSurfaceOptions">
+            <label for="beachSurface">Tipologia di spiaggia:</label>
+            <select id="beachSurface" name="beachSurface">
+                <option value="">Seleziona</option>
+                <option value="sabbia">Sabbia</option>
+                <option value="ghiaia">Ghiaia</option>
+                <option value="sabbiaGhiaia">Sabbia e ghiaia</option>
+                <option value="sassiGrandi">Sassi grandi</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="otherLocationContainer">
+            <label for="otherLocation">Specificare altro luogo:</label>
+            <input type="text" id="otherLocation" name="otherLocation">
+        </div>
+
+        <div class="form-group">
             <label for="region">Regione:</label>
             <select id="region" name="region" required>
                 <option value="">Seleziona</option>
-                <!-- Opzioni per le regioni italiane -->
+                <option value="Abruzzo">Abruzzo</option>
+                <option value="Basilicata">Basilicata</option>
+                <option value="Calabria">Calabria</option>
+                <option value="Campania">Campania</option>
+                <option value="Emilia-Romagna">Emilia-Romagna</option>
+                <option value="Friuli-Venezia Giulia">Friuli-Venezia Giulia</option>
+                <option value="Lazio">Lazio</option>
+                <option value="Liguria">Liguria</option>
+                <option value="Lombardia">Lombardia</option>
+                <option value="Marche">Marche</option>
+                <option value="Molise">Molise</option>
+                <option value="Piemonte">Piemonte</option>
+                <option value="Puglia">Puglia</option>
+                <option value="Sardegna">Sardegna</option>
+                <option value="Sicilia">Sicilia</option>
+                <option value="Toscana">Toscana</option>
+                <option value="Trentino-Alto Adige">Trentino-Alto Adige</option>
+                <option value="Umbria">Umbria</option>
+                <option value="Valle d'Aosta">Valle d'Aosta</option>
+                <option value="Veneto">Veneto</option>
             </select>
         </div>
 
-        <div id="provinceContainer" class="form-group" style="display:none;">
+        <div class="form-group">
             <label for="province">Provincia:</label>
-            <select id="province" name="province" required>
-                <option value="">Seleziona</option>
-                <!-- Opzioni per le province -->
-            </select>
+            <input type="text" id="province" name="province" required>
         </div>
 
-        <div id="communeContainer" class="form-group" style="display:none;">
+        <div class="form-group">
             <label for="commune">Comune:</label>
-            <select id="commune" name="commune" required>
-                <option value="">Seleziona</option>
-                <!-- Opzioni per i comuni -->
-            </select>
+            <input type="text" id="commune" name="commune" required>
         </div>
 
-        <div class="form-group" style="display:none;">
+        <div class="form-group">
             <label for="notes">Note:</label>
             <textarea id="notes" name="notes" rows="4"></textarea>
         </div>
 
-        <button type="submit" id="submitButton" style="display:none;">Invia</button>
+        <button type="submit" id="submitButton">Invia</button>
     </form>
 
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
