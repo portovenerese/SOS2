@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            / Gestione speciale per il campo "Dove"
+           // Gestione speciale per il campo "Dove"
 if (input.id === 'location') {
     input.addEventListener('change', function() {
         const seaDepthGroup = document.getElementById('seaDepthGroup');
