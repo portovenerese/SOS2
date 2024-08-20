@@ -62,133 +62,138 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Funzione per mostrare il gruppo successivo
-    function showNextGroup(currentGroup) {
-        const nextGroup = currentGroup.nextElementSibling;
-        if (nextGroup && nextGroup.classList.contains('form-group')) {
-            nextGroup.style.display = 'block';
+    // Funzione per mostrare un gruppo specifico
+    function showGroup(groupId) {
+        const group = document.getElementById(groupId);
+        if (group) {
+            group.style.display = 'block';
         }
     }
 
-    // Event listeners per i campi del form
-    formGroups.forEach((group, index) => {
-        const input = group.querySelector('input, select');
-        if (input) {
-            input.addEventListener('input', function() {
-                if (this.value) {
-                    if (this.id !== 'item' && this.id !== 'location') {
-                        showNextGroup(group);
-                    }
-                }
-            });
-// Gestione speciale per il campo "Oggetto smarrito"
-            if (input.id === 'item') {
-                input.addEventListener('change', function() {
-                    const otherItemGroup = document.getElementById('otherItemGroup');
-                    const locationGroup = document.querySelector('.form-group:has(#location)');
-                    
-                    if (this.value === 'Altro') {
-                        otherItemGroup.style.display = 'block';
-                        locationGroup.style.display = 'none';
-                    } else {
-                        otherItemGroup.style.display = 'none';
-                        locationGroup.style.display = 'block';
-                    }
-                });
+    // Funzione per nascondere un gruppo specifico
+    function hideGroup(groupId) {
+        const group = document.getElementById(groupId);
+        if (group) {
+            group.style.display = 'none';
+        }
+    }
+
+    // Funzione per nascondere tutti i gruppi dopo un certo punto
+    function hideGroupsAfter(groupId) {
+        let shouldHide = false;
+        formGroups.forEach(group => {
+            if (shouldHide) {
+                group.style.display = 'none';
             }
+            if (group.id === groupId) {
+                shouldHide = true;
+            }
+        });
+    }
 
-           // Gestione speciale per il campo "Dove"
-if (input.id === 'location') {
-    input.addEventListener('change', function() {
-        const seaDepthGroup = document.getElementById('seaDepthGroup');
-        const beachTypeGroup = document.getElementById('beachTypeGroup');
-        const beachSandTypeGroup = document.getElementById('beachSandTypeGroup');
-        const otherLocationGroup = document.getElementById('otherLocationGroup');
-        const regionGroup = document.querySelector('.form-group:has(#region)');
-
-        seaDepthGroup.style.display = 'none';
-        beachTypeGroup.style.display = 'none';
-        beachSandTypeGroup.style.display = 'none';
-        otherLocationGroup.style.display = 'none';
-        regionGroup.style.display = 'none';
-
-        if (this.value === 'Mare') {
-            beachTypeGroup.style.display = 'block';
-        } else if (this.value === 'Spiaggia') {
-            beachTypeGroup.style.display = 'block';
-        } else if (this.value === 'Altro') {
-            otherLocationGroup.style.display = 'block';
-            regionGroup.style.display = 'block';
+    // Gestione del campo "Oggetto smarrito"
+    document.getElementById('item').addEventListener('change', function() {
+        hideGroupsAfter('itemGroup');
+        if (this.value === 'Altro') {
+            showGroup('otherItemGroup');
         } else {
-            regionGroup.style.display = 'block';
+            hideGroup('otherItemGroup');
+            showGroup('locationGroup');
         }
     });
-}
 
-// Gestione speciale per il campo "Stabilimento balneare o spiaggia libera?"
-if (input.id === 'beachType') {
-    input.addEventListener('change', function() {
-        const seaDepthGroup = document.getElementById('seaDepthGroup');
-        const beachSandTypeGroup = document.getElementById('beachSandTypeGroup');
-        const regionGroup = document.querySelector('.form-group:has(#region)');
-        
+    // Gestione del campo "Altro oggetto"
+    document.getElementById('otherItem').addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+            showGroup('locationGroup');
+        } else {
+            hideGroupsAfter('otherItemGroup');
+        }
+    });
+
+    // Gestione del campo "Dove"
+    document.getElementById('location').addEventListener('change', function() {
+        hideGroupsAfter('locationGroup');
+        switch(this.value) {
+            case 'Mare':
+            case 'Spiaggia':
+                showGroup('beachTypeGroup');
+                break;
+            case 'Altro':
+                showGroup('otherLocationGroup');
+                break;
+            default:
+                showGroup('regionGroup');
+        }
+    });
+
+    // Gestione del campo "Stabilimento balneare o spiaggia libera?"
+    document.getElementById('beachType').addEventListener('change', function() {
         if (this.value) {
             const locationValue = document.getElementById('location').value;
             if (locationValue === 'Mare') {
-                seaDepthGroup.style.display = 'block';
+                showGroup('seaDepthGroup');
             } else if (locationValue === 'Spiaggia') {
-                beachSandTypeGroup.style.display = 'block';
+                showGroup('beachSandTypeGroup');
             }
-            regionGroup.style.display = 'block';
         }
     });
-}
 
-            // Gestione speciale per il campo "Profondità del mare"
-            if (input.id === 'seaDepth') {
-                input.addEventListener('change', function() {
-                    if (this.value) {
-                        document.getElementById('seaBottomGroup').style.display = 'block';
-                    }
-                });
-            }
+    // Gestione del campo "Profondità del mare"
+    document.getElementById('seaDepth').addEventListener('change', function() {
+        if (this.value) {
+            showGroup('seaBottomGroup');
+        }
+    });
 
-            // Gestione speciale per il campo "Regione"
-            if (input.id === 'region') {
-                input.addEventListener('change', function() {
-                    if (this.value) {
-                        document.getElementById('provinceGroup').style.display = 'block';
-                        populateProvince(this.value);
-                    }
-                });
-            }
+    // Gestione del campo "Fondale marino"
+    document.getElementById('seaBottom').addEventListener('change', function() {
+        if (this.value) {
+            showGroup('regionGroup');
+        }
+    });
 
-            // Gestione speciale per il campo "Provincia"
-            if (input.id === 'province') {
-                input.addEventListener('change', function() {
-                    if (this.value) {
-                        document.getElementById('communeGroup').style.display = 'block';
-                        populateComuni(this.value);
-                    }
-                });
-            }
+    // Gestione del campo "Tipologia di spiaggia"
+    document.getElementById('beachSandType').addEventListener('change', function() {
+        if (this.value) {
+            showGroup('regionGroup');
+        }
+    });
 
-            // Gestione speciale per il campo "Comune"
-            if (input.id === 'commune') {
-                input.addEventListener('change', function() {
-                    if (this.value) {
-                        document.getElementById('notesGroup').style.display = 'block';
-                        submitBtn.style.display = 'block';
-                    }
-                });
-            }
+    // Gestione del campo "Altro luogo"
+    document.getElementById('otherLocation').addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+            showGroup('regionGroup');
+        }
+    });
+
+    // Gestione del campo "Regione"
+    document.getElementById('region').addEventListener('change', function() {
+        if (this.value) {
+            populateProvince(this.value);
+            showGroup('provinceGroup');
+        }
+    });
+
+    // Gestione del campo "Provincia"
+    document.getElementById('province').addEventListener('change', function() {
+        if (this.value) {
+            populateComuni(this.value);
+            showGroup('communeGroup');
+        }
+    });
+
+    // Gestione del campo "Comune"
+    document.getElementById('commune').addEventListener('change', function() {
+        if (this.value) {
+            showGroup('notesGroup');
+            submitBtn.style.display = 'block';
         }
     });
 
     // Event listener per l'invio del form
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        // Implementazione dell'invio dei dati a Formspree
         const formData = new FormData(form);
         fetch(form.action, {
             method: 'POST',
