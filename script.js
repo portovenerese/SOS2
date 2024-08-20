@@ -97,50 +97,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            // Gestione speciale per il campo "Dove"
-            if (input.id === 'location') {
-                input.addEventListener('change', function() {
-                    const seaDepthGroup = document.getElementById('seaDepthGroup');
-                    const beachTypeGroup = document.getElementById('beachTypeGroup');
-                    const beachSandTypeGroup = document.getElementById('beachSandTypeGroup');
-                    const otherLocationGroup = document.getElementById('otherLocationGroup');
-                    const regionGroup = document.querySelector('.form-group:has(#region)');
+            / Gestione speciale per il campo "Dove"
+if (input.id === 'location') {
+    input.addEventListener('change', function() {
+        const seaDepthGroup = document.getElementById('seaDepthGroup');
+        const beachTypeGroup = document.getElementById('beachTypeGroup');
+        const beachSandTypeGroup = document.getElementById('beachSandTypeGroup');
+        const otherLocationGroup = document.getElementById('otherLocationGroup');
+        const regionGroup = document.querySelector('.form-group:has(#region)');
 
-                    seaDepthGroup.style.display = 'none';
-                    beachTypeGroup.style.display = 'none';
-                    beachSandTypeGroup.style.display = 'none';
-                    otherLocationGroup.style.display = 'none';
-                    regionGroup.style.display = 'none';
+        seaDepthGroup.style.display = 'none';
+        beachTypeGroup.style.display = 'none';
+        beachSandTypeGroup.style.display = 'none';
+        otherLocationGroup.style.display = 'none';
+        regionGroup.style.display = 'none';
 
-                    if (this.value === 'Mare') {
-                        seaDepthGroup.style.display = 'block';
-                        beachTypeGroup.style.display = 'block';
-                    } else if (this.value === 'Spiaggia') {
-                        beachTypeGroup.style.display = 'block';
-                        beachSandTypeGroup.style.display = 'block';
-                    } else if (this.value === 'Altro') {
-                        otherLocationGroup.style.display = 'block';
-                    } else {
-                        regionGroup.style.display = 'block';
-                    }
-                });
+        if (this.value === 'Mare') {
+            beachTypeGroup.style.display = 'block';
+        } else if (this.value === 'Spiaggia') {
+            beachTypeGroup.style.display = 'block';
+        } else if (this.value === 'Altro') {
+            otherLocationGroup.style.display = 'block';
+            regionGroup.style.display = 'block';
+        } else {
+            regionGroup.style.display = 'block';
+        }
+    });
+}
+
+// Gestione speciale per il campo "Stabilimento balneare o spiaggia libera?"
+if (input.id === 'beachType') {
+    input.addEventListener('change', function() {
+        const seaDepthGroup = document.getElementById('seaDepthGroup');
+        const beachSandTypeGroup = document.getElementById('beachSandTypeGroup');
+        const regionGroup = document.querySelector('.form-group:has(#region)');
+        
+        if (this.value) {
+            const locationValue = document.getElementById('location').value;
+            if (locationValue === 'Mare') {
+                seaDepthGroup.style.display = 'block';
+            } else if (locationValue === 'Spiaggia') {
+                beachSandTypeGroup.style.display = 'block';
             }
+            regionGroup.style.display = 'block';
+        }
+    });
+}
 
             // Gestione speciale per il campo "Profondità del mare"
             if (input.id === 'seaDepth') {
                 input.addEventListener('change', function() {
                     if (this.value) {
                         document.getElementById('seaBottomGroup').style.display = 'block';
-                    }
-                });
-            }
-
-            // Gestione speciale per il campo "Stabilimento balneare o spiaggia libera?"
-            if (input.id === 'beachType') {
-                input.addEventListener('change', function() {
-                    if (this.value) {
-                        const regionGroup = document.querySelector('.form-group:has(#region)');
-                        regionGroup.style.display = 'block';
                     }
                 });
             }
