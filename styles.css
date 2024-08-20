@@ -33,7 +33,7 @@ form {
 
 label {
     display: block;
-    margin-bottom: 10px; /* Aumentato da 5px a 10px */
+    margin-bottom: 15px; /* Aumentato da 5px a 15px */
 }
 
 input[type="text"],
