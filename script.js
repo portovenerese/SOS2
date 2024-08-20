@@ -1,80 +1,176 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('lostObjectForm');
-    const formGroups = document.querySelectorAll('.form-group');
-    const objectSelect = document.getElementById('object');
-    const otherObjectContainer = document.getElementById('otherObjectContainer');
-    const whereSelect = document.getElementById('where');
-    const seaOptions = document.getElementById('seaOptions');
-    const seaBottomOptions = document.getElementById('seaBottomOptions');
-    const beachOptions = document.getElementById('beachOptions');
-    const beachSurfaceOptions = document.getElementById('beachSurfaceOptions');
-    const otherLocationContainer = document.getElementById('otherLocationContainer');
-    const submitButton = document.getElementById('submitButton');
+    const form = document.getElementById('lostItemForm');
+    const formGroups = form.querySelectorAll('.form-group');
+    const submitBtn = document.getElementById('submitBtn');
+    const confirmationPopup = document.getElementById('confirmationPopup');
+    const closePopupBtn = document.getElementById('closePopup');
 
-    let currentGroupIndex = 0;
+    let italiaData;
 
-    function showNextGroup() {
-        if (currentGroupIndex < formGroups.length) {
-            formGroups[currentGroupIndex].style.display = 'block';
-            currentGroupIndex++;
-        }
-        if (currentGroupIndex === formGroups.length) {
-            submitButton.style.display = 'block';
+    // Funzione per caricare i dati JSON
+    async function loadItaliaData() {
+        try {
+            const response = await fetch('italia_data.json');
+            italiaData = await response.json();
+            populateRegioni();
+        } catch (error) {
+            console.error('Errore nel caricamento dei dati:', error);
         }
     }
 
-    formGroups.forEach((group, index) => {
-        const input = group.querySelector('input, select, textarea');
-        if (input) {
-            input.addEventListener('change', function() {
-                if (this.value) {
-                    showNextGroup();
-                }
+    // Funzione per popolare le regioni
+    function populateRegioni() {
+        const regionSelect = document.getElementById('region');
+        italiaData.regioni.forEach(regione => {
+            const option = document.createElement('option');
+            option.value = regione.nome;
+            option.textContent = regione.nome;
+            regionSelect.appendChild(option);
+        });
+    }
+
+    // Funzione per popolare le province
+    function populateProvince(regione) {
+        const provinceSelect = document.getElementById('province');
+        provinceSelect.innerHTML = '<option value="">Seleziona una provincia</option>';
+        const regioneData = italiaData.regioni.find(r => r.nome === regione);
+        if (regioneData) {
+            regioneData.province.forEach(provincia => {
+                const option = document.createElement('option');
+                option.value = provincia.nome;
+                option.textContent = provincia.nome;
+                provinceSelect.appendChild(option);
             });
         }
-    });
+    }
 
-    objectSelect.addEventListener('change', function() {
-        otherObjectContainer.style.display = this.value === 'altro' ? 'block' : 'none';
-    });
+    // Funzione per popolare i comuni
+    function populateComuni(provincia) {
+        const comuneSelect = document.getElementById('commune');
+        comuneSelect.innerHTML = '<option value="">Seleziona un comune</option>';
+        const regioneData = italiaData.regioni.find(r => r.province.some(p => p.nome === provincia));
+        if (regioneData) {
+            const provinciaData = regioneData.province.find(p => p.nome === provincia);
+            if (provinciaData) {
+                provinciaData.comuni.forEach(comune => {
+                    const option = document.createElement('option');
+                    option.value = comune;
+                    option.textContent = comune;
+                    comuneSelect.appendChild(option);
+                });
+            }
+        }
+    }
 
-    whereSelect.addEventListener('change', function() {
-        seaOptions.style.display = 'none';
-        seaBottomOptions.style.display = 'none';
-        beachOptions.style.display = 'none';
-        beachSurfaceOptions.style.display = 'none';
-        otherLocationContainer.style.display = 'none';
+    // Funzione per mostrare il gruppo successivo
+    function showNextGroup(currentGroup) {
+        const nextGroup = currentGroup.nextElementSibling;
+        if (nextGroup && nextGroup.classList.contains('form-group')) {
+            nextGroup.style.display = 'block';
+        }
+    }
 
-        switch(this.value) {
-            case 'mare':
-                seaOptions.style.display = 'block';
-                break;
-            case 'spiaggia':
-                beachOptions.style.display = 'block';
-                break;
-            case 'altro':
-                otherLocationContainer.style.display = 'block';
-                break;
+    // Event listeners per i campi del form
+    formGroups.forEach((group, index) => {
+        const input = group.querySelector('input, select');
+        if (input) {
+            input.addEventListener('input', function() {
+                if (this.value) {
+                    showNextGroup(group);
+                }
+            });
+
+            // Gestione speciale per il campo "Oggetto smarrito"
+            if (input.id === 'item') {
+                input.addEventListener('change', function() {
+                    const otherItemGroup = document.getElementById('otherItemGroup');
+                    if (this.value === 'Altro') {
+                        otherItemGroup.style.display = 'block';
+                    } else {
+                        otherItemGroup.style.display = 'none';
+                        showNextGroup(group);
+                    }
+                });
+            }
+
+            // Gestione speciale per il campo "Dove"
+            if (input.id === 'location') {
+                input.addEventListener('change', function() {
+                    const seaDepthGroup = document.getElementById('seaDepthGroup');
+                    const beachTypeGroup = document.getElementById('beachTypeGroup');
+                    const otherLocationGroup = document.getElementById('otherLocationGroup');
+
+                    seaDepthGroup.style.display = 'none';
+                    beachTypeGroup.style.display = 'none';
+                    otherLocationGroup.style.display = 'none';
+
+                    if (this.value === 'Mare') {
+                        seaDepthGroup.style.display = 'block';
+                    } else if (this.value === 'Spiaggia') {
+                        beachTypeGroup.style.display = 'block';
+                    } else if (this.value === 'Altro') {
+                        otherLocationGroup.style.display = 'block';
+                    } else {
+                        showNextGroup(group);
+                    }
+                });
+            }
+
+            // Gestione speciale per il campo "Profondità del mare"
+            if (input.id === 'seaDepth') {
+                input.addEventListener('change', function() {
+                    if (this.value) {
+                        document.getElementById('seaBottomGroup').style.display = 'block';
+                    }
+                });
+            }
+
+            // Gestione speciale per il campo "Stabilimento balneare o spiaggia libera?"
+            if (input.id === 'beachType') {
+                input.addEventListener('change', function() {
+                    if (this.value) {
+                        document.getElementById('beachSandTypeGroup').style.display = 'block';
+                    }
+                });
+            }
+
+            // Gestione speciale per il campo "Regione"
+            if (input.id === 'region') {
+                input.addEventListener('change', function() {
+                    if (this.value) {
+                        document.getElementById('provinceGroup').style.display = 'block';
+                        populateProvince(this.value);
+                    }
+                });
+            }
+
+            // Gestione speciale per il campo "Provincia"
+            if (input.id === 'province') {
+                input.addEventListener('change', function() {
+                    if (this.value) {
+                        document.getElementById('communeGroup').style.display = 'block';
+                        populateComuni(this.value);
+                    }
+                });
+            }
+
+            // Gestione speciale per il campo "Comune"
+            if (input.id === 'commune') {
+                input.addEventListener('change', function() {
+                    if (this.value) {
+                        document.getElementById('notesGroup').style.display = 'block';
+                        submitBtn.style.display = 'block';
+                    }
+                });
+            }
         }
     });
 
-    document.getElementById('seaDepth').addEventListener('change', function() {
-        if (this.value) {
-            seaBottomOptions.style.display = 'block';
-        }
-    });
-
-    document.getElementById('beachType').addEventListener('change', function() {
-        if (this.value) {
-            beachSurfaceOptions.style.display = 'block';
-        }
-    });
-
+    // Event listener per l'invio del form
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
+        // Implementazione dell'invio dei dati a Formspree
         const formData = new FormData(form);
-        
         fetch(form.action, {
             method: 'POST',
             body: formData,
@@ -83,17 +179,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }).then(response => {
             if (response.ok) {
-                alert('I dati sono stati correttamente inviati.');
-                form.reset();
-                location.reload(); // Ricarica la pagina per ricominciare
+                confirmationPopup.style.display = 'flex';
             } else {
-                alert('Si è verificato un errore durante l\'invio. Riprova più tardi.');
+                alert('Si è verificato un errore durante l\'invio del form. Per favore, riprova.');
             }
         }).catch(error => {
-            alert('Si è verificato un errore durante l\'invio. Riprova più tardi.');
             console.error('Errore:', error);
+            alert('Si è verificato un errore durante l\'invio del form. Per favore, riprova.');
         });
     });
 
-    showNextGroup(); // Mostra il primo gruppo all'avvio
+    // Event listener per chiudere il popup
+    closePopupBtn.addEventListener('click', function() {
+        confirmationPopup.style.display = 'none';
+        form.reset();
+        formGroups.forEach(group => group.style.display = 'none');
+        formGroups[0].style.display = 'block';
+    });
+
+    // Mostra il primo gruppo del form
+    formGroups[0].style.display = 'block';
+
+    // Carica i dati JSON
+    loadItaliaData();
 });
