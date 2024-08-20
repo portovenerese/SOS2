@@ -28,12 +28,12 @@ form {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 25px; /* Aumentato da 15px a 25px */
 }
 
 label {
     display: block;
-    margin-bottom: 15px; /* Aumentato da 5px a 15px */
+    margin-bottom: 5px; /* Mantenuto a 5px per lo spazio tra etichetta e campo input */
 }
 
 input[type="text"],
@@ -45,6 +45,7 @@ textarea {
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
+    margin-bottom: 10px; /* Aggiunto per dare spazio extra sotto ogni campo input */
 }
 
 button {
