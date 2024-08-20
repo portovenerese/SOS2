@@ -76,19 +76,23 @@ document.addEventListener('DOMContentLoaded', function() {
         if (input) {
             input.addEventListener('input', function() {
                 if (this.value) {
-                    showNextGroup(group);
+                    if (this.id !== 'item' && this.id !== 'location') {
+                        showNextGroup(group);
+                    }
                 }
             });
-
-            // Gestione speciale per il campo "Oggetto smarrito"
+// Gestione speciale per il campo "Oggetto smarrito"
             if (input.id === 'item') {
                 input.addEventListener('change', function() {
                     const otherItemGroup = document.getElementById('otherItemGroup');
+                    const locationGroup = document.querySelector('.form-group:has(#location)');
+                    
                     if (this.value === 'Altro') {
                         otherItemGroup.style.display = 'block';
+                        locationGroup.style.display = 'none';
                     } else {
                         otherItemGroup.style.display = 'none';
-                        showNextGroup(group);
+                        locationGroup.style.display = 'block';
                     }
                 });
             }
@@ -98,20 +102,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.addEventListener('change', function() {
                     const seaDepthGroup = document.getElementById('seaDepthGroup');
                     const beachTypeGroup = document.getElementById('beachTypeGroup');
+                    const beachSandTypeGroup = document.getElementById('beachSandTypeGroup');
                     const otherLocationGroup = document.getElementById('otherLocationGroup');
+                    const regionGroup = document.querySelector('.form-group:has(#region)');
 
                     seaDepthGroup.style.display = 'none';
                     beachTypeGroup.style.display = 'none';
+                    beachSandTypeGroup.style.display = 'none';
                     otherLocationGroup.style.display = 'none';
+                    regionGroup.style.display = 'none';
 
                     if (this.value === 'Mare') {
                         seaDepthGroup.style.display = 'block';
+                        beachTypeGroup.style.display = 'block';
                     } else if (this.value === 'Spiaggia') {
                         beachTypeGroup.style.display = 'block';
+                        beachSandTypeGroup.style.display = 'block';
                     } else if (this.value === 'Altro') {
                         otherLocationGroup.style.display = 'block';
                     } else {
-                        showNextGroup(group);
+                        regionGroup.style.display = 'block';
                     }
                 });
             }
@@ -129,7 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (input.id === 'beachType') {
                 input.addEventListener('change', function() {
                     if (this.value) {
-                        document.getElementById('beachSandTypeGroup').style.display = 'block';
+                        const regionGroup = document.querySelector('.form-group:has(#region)');
+                        regionGroup.style.display = 'block';
                     }
                 });
             }
