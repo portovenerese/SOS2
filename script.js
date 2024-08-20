@@ -91,6 +91,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Gestione del campo "Nome e cognome"
+    document.getElementById('name').addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+            showGroup('phoneGroup');
+        }
+    });
+
+    // Gestione del campo "Numero di telefono"
+    document.getElementById('phone').addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+            showGroup('itemGroup');
+        }
+    });
+
     // Gestione del campo "Oggetto smarrito"
     document.getElementById('item').addEventListener('change', function() {
         hideGroupsAfter('itemGroup');
@@ -106,8 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('otherItem').addEventListener('input', function() {
         if (this.value.trim() !== '') {
             showGroup('locationGroup');
-        } else {
-            hideGroupsAfter('otherItemGroup');
         }
     });
 
