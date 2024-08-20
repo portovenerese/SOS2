@@ -1,0 +1,43 @@
+{
+  "regioni": [
+    {
+      "nome": "Lombardia",
+      "province": [
+        {
+          "nome": "Milano",
+          "comuni": ["Milano", "Monza", "Sesto San Giovanni"]
+        },
+        {
+          "nome": "Bergamo",
+          "comuni": ["Bergamo", "Treviglio", "Seriate"]
+        }
+      ]
+    },
+    {
+      "nome": "Lazio",
+      "province": [
+        {
+          "nome": "Roma",
+          "comuni": ["Roma", "Fiumicino", "Civitavecchia"]
+        },
+        {
+          "nome": "Viterbo",
+          "comuni": ["Viterbo", "Tarquinia", "Civita Castellana"]
+        }
+      ]
+    },
+    {
+      "nome": "Toscana",
+      "province": [
+        {
+          "nome": "Firenze",
+          "comuni": ["Firenze", "Empoli", "Scandicci"]
+        },
+        {
+          "nome": "Pisa",
+          "comuni": ["Pisa", "Pontedera", "San Giuliano Terme"]
+        }
+      ]
+    }
+  ]
+}
